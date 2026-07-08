@@ -30,3 +30,9 @@ flowchart TD
 `service.py` contains application logic, like generating the UUID v4 `public_id`.
 `repository.py` contains SQL queries.
 `database.py` creates MySQL connections.
+
+The clothing module follows the same flow:
+
+```txt
+routes.py -> schemas.py -> service.py -> repository.py -> database.py -> MySQL
+```

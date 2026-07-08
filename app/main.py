@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.clothing.routes import router as clothing_router
 from app.health.routes import router as health_router
 from app.identities.routes import router as identities_router
 
@@ -15,6 +16,7 @@ app = FastAPI(
 
 app.include_router(health_router)
 app.include_router(identities_router)
+app.include_router(clothing_router)
 
 
 @app.get("/", tags=["Health"])

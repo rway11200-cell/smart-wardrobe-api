@@ -31,3 +31,52 @@ erDiagram
         datetime updated_at
     }
 ```
+
+## Clothing Inventory
+
+`clothing_categories` stores the available clothing categories.
+`clothing_items` stores clothing owned by an identity. Public API endpoints receive `public_id`, but clothing items are stored internally with `identities.id`.
+
+```mermaid
+erDiagram
+    IDENTITIES ||--o{ CLOTHING_ITEMS : owns
+    CLOTHING_CATEGORIES ||--o{ CLOTHING_ITEMS : classifies
+
+    IDENTITIES {
+        int id PK
+        char public_id UK
+        varchar display_name
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+
+    CLOTHING_CATEGORIES {
+        int id PK
+        varchar name UK
+        varchar layer_type
+        boolean required_for_outfit
+        int display_order
+        datetime created_at
+    }
+
+    CLOTHING_ITEMS {
+        int id PK
+        int identity_id FK
+        int category_id FK
+        varchar name
+        varchar color
+        varchar material
+        varchar image_url
+        decimal warmth_rating
+        decimal comfort_rating
+        decimal formality_rating
+        decimal rain_rating
+        decimal wind_rating
+        varchar current_status
+        boolean is_active
+        datetime last_worn_at
+        datetime created_at
+        datetime updated_at
+    }
+```
