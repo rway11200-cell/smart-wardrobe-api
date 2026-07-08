@@ -38,6 +38,15 @@ def get_identity(public_id: str):
     return identity
 
 
+def list_identities():
+    connection = get_connection()
+
+    try:
+        return repository.list_identities(connection)
+    finally:
+        connection.close()
+
+
 def update_identity_profile(public_id: str, changes: dict):
     connection = get_connection()
 

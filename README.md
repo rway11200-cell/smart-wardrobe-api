@@ -73,6 +73,7 @@ The internal numeric `id` is used only for database relationships.
 ```txt
 GET    /
 GET    /health
+GET    /identities
 POST   /identities
 GET    /identities/{public_id}
 PATCH  /identities/{public_id}/profile
@@ -129,6 +130,12 @@ Create an identity:
 curl -X POST http://localhost:8000/identities \
   -H "Content-Type: application/json" \
   -d '{"display_name":"Sebastian"}'
+```
+
+List identities:
+
+```bash
+curl http://localhost:8000/identities
 ```
 
 Get an identity:

@@ -13,6 +13,11 @@ def create_identity(identity: IdentityCreate):
     return service.create_identity(identity)
 
 
+@router.get("", response_model=list[IdentityResponse])
+def list_identities():
+    return service.list_identities()
+
+
 @router.get("/{public_id}", response_model=IdentityResponse)
 def get_identity(public_id: UUID = Path(..., examples=["550e8400-e29b-41d4-a716-446655440000"])):
     try:

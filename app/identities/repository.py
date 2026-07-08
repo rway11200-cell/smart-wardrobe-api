@@ -65,6 +65,25 @@ def get_identity_by_public_id(connection, public_id: str):
         return _to_identity_response(cursor.fetchone())
 
 
+def list_identities(connection):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT
+                i.public_id,
+                i.display_name,
+                p.cold_sensitivity,
+                p.heat_sensitivity,
+                p.comfort_priority,
+                p.style_priority
+            FROM identities i
+            INNER JOIN identity_profiles p ON p.identity_id = i.id
+            ORDER BY i.id ASC
+            """
+        )
+        return [_to_identity_response(row) for row in cursor.fetchall()]
+
+
 def get_internal_identity_id(connection, public_id: str):
     with connection.cursor() as cursor:
         cursor.execute("SELECT id FROM identities WHERE public_id = %s", (public_id,))
