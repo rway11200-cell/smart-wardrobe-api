@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.clothing.routes import router as clothing_router
 from app.health.routes import router as health_router
@@ -12,6 +13,17 @@ app = FastAPI(
         "Requests flow through routes, API schemas, services, repositories, database connections, and MySQL."
     ),
     version="0.1.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://smart-wardrobe-ui-production.up.railway.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(health_router)
