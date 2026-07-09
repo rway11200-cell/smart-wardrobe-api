@@ -1,7 +1,7 @@
 INSERT IGNORE INTO identities (public_id, display_name)
 VALUES
-    ('11111111-1111-4111-8111-111111111111', 'Alex Morgan'),
-    ('22222222-2222-4222-8222-222222222222', 'Jordan Lee');
+    ('11111111-1111-4111-8111-111111111111', 'Demo User One'),
+    ('22222222-2222-4222-8222-222222222222', 'Demo User Two');
 
 INSERT IGNORE INTO identity_profiles (
     identity_id,

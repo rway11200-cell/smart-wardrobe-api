@@ -74,7 +74,8 @@ docs/
 
 `identities` stores the minimal system identity.
 `identity_profiles` stores app-specific preferences for that identity.
-`public_id` is temporarily used as an external identifier until real authentication is implemented.
+`nickname` is the human-friendly identifier used by the frontend to continue with an existing identity.
+`public_id` is kept as a technical external identifier for existing API routes until real authentication is implemented.
 The internal numeric `id` is used only for database relationships.
 
 ## API Endpoints
@@ -84,6 +85,7 @@ GET    /
 GET    /health
 GET    /identities
 POST   /identities
+GET    /identities/nickname/{nickname}
 GET    /identities/{public_id}
 PATCH  /identities/{public_id}/profile
 GET    /clothing-categories
@@ -96,7 +98,7 @@ PATCH  /identities/{public_id}/clothing-items/{item_id}/status
 DELETE /identities/{public_id}/clothing-items/{item_id}
 ```
 
-Public responses use `public_id` and never expose the internal `identities.id`.
+Public responses use `public_id` and `nickname`, and never expose the internal `identities.id`.
 Clothing item responses do not expose internal `identity_id`.
 Colors are read-only API options loaded from `migrations/007_create_clothing_colors.sql`; the API does not expose endpoints to create or edit colors.
 
@@ -105,8 +107,8 @@ Colors are read-only API options loaded from `migrations/007_create_clothing_col
 The local database includes dummy identities from `migrations/003_seed_dummy_identities.sql`:
 
 ```txt
-11111111-1111-4111-8111-111111111111  Alex Morgan
-22222222-2222-4222-8222-222222222222  Jordan Lee
+11111111-1111-4111-8111-111111111111  Demo User One
+22222222-2222-4222-8222-222222222222  Demo User Two
 ```
 
 ## Quick Start
@@ -148,13 +150,19 @@ Create an identity:
 ```bash
 curl -X POST http://localhost:8000/identities \
   -H "Content-Type: application/json" \
-  -d '{"display_name":"Sebastian"}'
+  -d '{"display_name":"Demo User","nickname":"demo_user"}'
 ```
 
 List identities:
 
 ```bash
 curl http://localhost:8000/identities
+```
+
+Search identities by name:
+
+```bash
+curl "http://localhost:8000/identities?name=Demo"
 ```
 
 Get an identity:

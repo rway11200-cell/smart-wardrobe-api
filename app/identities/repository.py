@@ -13,6 +13,7 @@ def _to_identity_response(row):
     return {
         "public_id": row["public_id"],
         "display_name": row["display_name"],
+        "nickname": row["nickname"],
         "profile": {
             "cold_sensitivity": float(row["cold_sensitivity"]),
             "heat_sensitivity": float(row["heat_sensitivity"]),
@@ -22,14 +23,14 @@ def _to_identity_response(row):
     }
 
 
-def create_identity(connection, public_id: str, display_name: str) -> int:
+def create_identity(connection, public_id: str, display_name: str, nickname: str) -> int:
     with connection.cursor() as cursor:
         cursor.execute(
             """
-            INSERT INTO identities (public_id, display_name)
-            VALUES (%s, %s)
+            INSERT INTO identities (public_id, display_name, nickname)
+            VALUES (%s, %s, %s)
             """,
-            (public_id, display_name),
+            (public_id, display_name, nickname),
         )
         return cursor.lastrowid
 
@@ -52,6 +53,7 @@ def get_identity_by_public_id(connection, public_id: str):
             SELECT
                 i.public_id,
                 i.display_name,
+                i.nickname,
                 p.cold_sensitivity,
                 p.heat_sensitivity,
                 p.comfort_priority,
@@ -65,21 +67,52 @@ def get_identity_by_public_id(connection, public_id: str):
         return _to_identity_response(cursor.fetchone())
 
 
-def list_identities(connection):
+def get_identity_by_nickname(connection, nickname: str):
     with connection.cursor() as cursor:
         cursor.execute(
             """
             SELECT
                 i.public_id,
                 i.display_name,
+                i.nickname,
                 p.cold_sensitivity,
                 p.heat_sensitivity,
                 p.comfort_priority,
                 p.style_priority
             FROM identities i
             INNER JOIN identity_profiles p ON p.identity_id = i.id
+            WHERE i.nickname = %s
+            """,
+            (nickname,),
+        )
+        return _to_identity_response(cursor.fetchone())
+
+
+def list_identities(connection, name: str | None = None):
+    values = []
+    where_clause = ""
+
+    if name:
+        where_clause = "WHERE i.display_name LIKE %s"
+        values.append(f"%{name}%")
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"""
+            SELECT
+                i.public_id,
+                i.display_name,
+                i.nickname,
+                p.cold_sensitivity,
+                p.heat_sensitivity,
+                p.comfort_priority,
+                p.style_priority
+            FROM identities i
+            INNER JOIN identity_profiles p ON p.identity_id = i.id
+            {where_clause}
             ORDER BY i.id ASC
-            """
+            """,
+            values,
         )
         return [_to_identity_response(row) for row in cursor.fetchall()]
 

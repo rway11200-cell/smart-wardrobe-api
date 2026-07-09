@@ -2,12 +2,14 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class IdentityCreate(BaseModel):
-    display_name: str = Field(min_length=1, max_length=100, examples=["Sebastian"])
+    display_name: str = Field(min_length=1, max_length=100, examples=["Demo User"])
+    nickname: str = Field(min_length=3, max_length=50, pattern=r"^[a-zA-Z0-9_-]+$", examples=["demo_user"])
 
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "display_name": "Sebastian",
+                "display_name": "Demo User",
+                "nickname": "demo_user",
             }
         }
     )
@@ -40,5 +42,6 @@ class IdentityProfileResponse(BaseModel):
 
 class IdentityResponse(BaseModel):
     public_id: str = Field(examples=["550e8400-e29b-41d4-a716-446655440000"])
-    display_name: str = Field(examples=["Sebastian"])
+    display_name: str = Field(examples=["Demo User"])
+    nickname: str = Field(examples=["demo_user"])
     profile: IdentityProfileResponse
