@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, Path, status
 from app.clothing import service
 from app.clothing.schemas import (
     ClothingCategoryResponse,
+    ClothingColorResponse,
     ClothingItemCreate,
     ClothingItemResponse,
     ClothingItemStatusUpdate,
@@ -30,6 +31,11 @@ def _handle_clothing_error(error: Exception):
 @router.get("/clothing-categories", response_model=list[ClothingCategoryResponse])
 def list_clothing_categories():
     return service.list_categories()
+
+
+@router.get("/clothing-colors", response_model=list[ClothingColorResponse])
+def list_clothing_colors():
+    return service.list_colors()
 
 
 @router.post(

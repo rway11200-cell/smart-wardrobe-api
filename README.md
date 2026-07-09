@@ -62,7 +62,8 @@ migrations/
 ├── 003_seed_dummy_identities.sql
 ├── 004_create_clothing_categories.sql
 ├── 005_create_clothing_items.sql
-└── 006_seed_clothing_categories.sql
+├── 006_seed_clothing_categories.sql
+└── 007_create_clothing_colors.sql
 
 docs/
 ├── database.md
@@ -86,6 +87,7 @@ POST   /identities
 GET    /identities/{public_id}
 PATCH  /identities/{public_id}/profile
 GET    /clothing-categories
+GET    /clothing-colors
 POST   /identities/{public_id}/clothing-items
 GET    /identities/{public_id}/clothing-items
 GET    /identities/{public_id}/clothing-items/{item_id}
@@ -96,6 +98,7 @@ DELETE /identities/{public_id}/clothing-items/{item_id}
 
 Public responses use `public_id` and never expose the internal `identities.id`.
 Clothing item responses do not expose internal `identity_id`.
+Colors are read-only API options loaded from `migrations/007_create_clothing_colors.sql`; the API does not expose endpoints to create or edit colors.
 
 ## Dummy Data
 
@@ -172,6 +175,12 @@ List clothing categories:
 
 ```bash
 curl http://localhost:8000/clothing-categories
+```
+
+List clothing colors:
+
+```bash
+curl http://localhost:8000/clothing-colors
 ```
 
 Create a clothing item:

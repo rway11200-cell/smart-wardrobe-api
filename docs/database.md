@@ -35,6 +35,7 @@ erDiagram
 ## Clothing Inventory
 
 `clothing_categories` stores the available clothing categories.
+`clothing_colors` stores read-only color options for frontend combos.
 `clothing_items` stores clothing owned by an identity. Public API endpoints receive `public_id`, but clothing items are stored internally with `identities.id`.
 
 ```mermaid
@@ -56,6 +57,14 @@ erDiagram
         varchar name UK
         varchar layer_type
         boolean required_for_outfit
+        int display_order
+        datetime created_at
+    }
+
+    CLOTHING_COLORS {
+        int id PK
+        varchar name UK
+        char hex_code
         int display_order
         datetime created_at
     }

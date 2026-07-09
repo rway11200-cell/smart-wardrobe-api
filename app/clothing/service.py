@@ -37,6 +37,15 @@ def list_categories():
         connection.close()
 
 
+def list_colors():
+    connection = get_connection()
+
+    try:
+        return repository.list_colors(connection)
+    finally:
+        connection.close()
+
+
 def _get_identity_id_or_raise(connection, public_id: str):
     identity_id = repository.get_identity_id_by_public_id(connection, public_id)
     if not identity_id:

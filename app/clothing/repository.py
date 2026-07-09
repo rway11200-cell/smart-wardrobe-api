@@ -23,6 +23,14 @@ def _to_category_response(row):
     }
 
 
+def _to_color_response(row):
+    return {
+        "name": row["name"],
+        "hex_code": row["hex_code"],
+        "display_order": row["display_order"],
+    }
+
+
 def _to_item_response(row):
     if not row:
         return None
@@ -57,6 +65,18 @@ def list_categories(connection):
             """
         )
         return [_to_category_response(row) for row in cursor.fetchall()]
+
+
+def list_colors(connection):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT name, hex_code, display_order
+            FROM clothing_colors
+            ORDER BY display_order ASC, name ASC
+            """
+        )
+        return [_to_color_response(row) for row in cursor.fetchall()]
 
 
 def get_identity_id_by_public_id(connection, public_id: str):

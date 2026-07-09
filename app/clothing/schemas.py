@@ -13,6 +13,12 @@ class ClothingCategoryResponse(BaseModel):
     display_order: int
 
 
+class ClothingColorResponse(BaseModel):
+    name: str
+    hex_code: str | None = None
+    display_order: int
+
+
 class ClothingItemCreate(BaseModel):
     category_name: str = Field(min_length=1, max_length=80, examples=["top"])
     name: str = Field(min_length=1, max_length=120, examples=["Black hoodie"])
